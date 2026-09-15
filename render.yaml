@@ -3,12 +3,19 @@ services:
     name: assemblyai-voice-agent
     runtime: node
     plan: free
+    region: oregon
+    branch: main
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
       - key: NODE_VERSION
-        value: 22
+        value: "22"
+      - key: NODE_ENV
+        value: production
       - key: ASSEMBLYAI_API_KEY
+        sync: false
+      # Set this to the exact Render HTTPS origin, without a trailing slash.
+      - key: PUBLIC_ORIGIN
         sync: false

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Secure browser client for an AssemblyAI voice agent.">
+  <title>Voice Assistant</title>
+  <link rel="icon" href="/favicon.svg?v=1.0.0" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=1.0.0">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="avatar" aria-hidden="true">◉</div>
+        <div>
+          <h1>Voice Assistant</h1>
+          <p id="status">Ready to talk</p>
+        </div>
+      </div>
+      <div class="badge">Agent online</div>
+    </header>
+
+    <section class="stage" aria-label="Call status">
+      <div>
+        <div id="orb" class="orb" aria-hidden="true"></div>
+        <div id="timer" aria-label="Call duration">00:00</div>
+      </div>
+    </section>
+
+    <section id="transcript" class="transcript" aria-live="polite">
+      <p class="line agent" id="hint"><b>Agent:</b> Press Start to begin.</p>
+    </section>
+
+    <div class="controls">
+      <button id="start" type="button">Start call</button>
+      <button id="mute" type="button" disabled>Mute</button>
+      <button id="end" type="button" disabled>End call</button>
+    </div>
+    <div id="error" class="error" role="alert"></div>
+    <noscript>This voice assistant requires JavaScript and microphone permission.</noscript>
+  </main>
+
+  <script type="module" src="/app.js?v=1.0.0"></script>
+</body>
+</html>
