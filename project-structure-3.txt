@@ -1,0 +1,10 @@
+assemblyai-voice-agent/
+├── package.json
+├── package-lock.json
+├── server.js
+├── render.yaml
+├── .env.example
+├── .gitignore
+└── public/
+    ├── index.html
+    └── pcm-processor.js

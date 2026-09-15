@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: assemblyai-voice-agent
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: ASSEMBLYAI_API_KEY
+        sync: false

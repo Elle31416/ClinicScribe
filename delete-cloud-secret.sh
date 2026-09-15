@@ -1,0 +1,1 @@
+gcloud secrets delete assemblyai-api-key --quiet

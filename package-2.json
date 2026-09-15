@@ -1,0 +1,16 @@
+{
+  "name": "voice-agent-mvp",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "assemblyai": "4.41.1",
+    "dotenv": "17.2.2",
+    "express": "5.1.0"
+  }
+}
