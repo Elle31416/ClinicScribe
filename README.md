@@ -136,6 +136,7 @@ ClinicScribe takes the **Voice Agent API** path of the hackathon challenge:
 │   ├── pcm-processor.js       # AudioWorklet: 24 kHz PCM16 with linear-resample fallback
 │   └── favicon.svg
 ├── scripts/
+│   ├── import-agent.mjs       # npm run import <agent_id> — rewire the Voice Agent ID
 │   └── verify-pcm.mjs         # node --test unit tests for the PCM worklet
 └── docs/
     ├── cover.png              # Hackathon cover image (also the README hero)
@@ -158,9 +159,18 @@ npm start
 
 Open <http://localhost:3000>, allow microphone access, press **Start call**.
 
-> **Bring your own agent:** the client binds to a stored agent via `AGENT_ID` at the top of
-> `public/app.js`. Replace it with the agent ID from *your* AssemblyAI project — the voice,
-> greeting, system prompt, and tools all live on the agent, not in this repo.
+> **Bring your own agent:** the client binds to a stored agent via the `AGENT_ID`
+> constant at the top of `public/app.js`. To point the app at any other agent in
+> *your* AssemblyAI project, run:
+>
+> ```bash
+> npm run import <agent_id>
+> # e.g. npm run import agent_b0aca15004de4ab2b39bbfc1ce360956
+> ```
+>
+> The script validates the ID format, rewrites the one line in `public/app.js`,
+> and is a no-op if the agent is already active — then commit the change.
+> The voice, greeting, system prompt, and tools all live on the agent, not in this repo.
 
 Run checks without starting the server:
 
