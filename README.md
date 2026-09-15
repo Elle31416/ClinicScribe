@@ -14,7 +14,7 @@
     <img alt="Built for the AssemblyAI Voice Agent Hackathon" src="https://img.shields.io/badge/lablab.ai-AssemblyAI%20Voice%20Agent%20Hackathon-6d28d9?style=for-the-badge">
   </a>
   <img alt="Node 22" src="https://img.shields.io/badge/node-22.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
-  <img alt="AssemblyAI SDK 4.41.1" src="https://img.shields.io/badge/assemblyai%20sdk-4.41.1-0891b2?style=for-the-badge">
+  <img alt="AssemblyAI Voice Agent API" src="https://img.shields.io/badge/AssemblyAI-Voice%20Agent%20API-0891b2?style=for-the-badge">
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0e7490?style=for-the-badge">
   <a href="render.yaml">
     <img alt="Deploy: Render Blueprint" src="https://img.shields.io/badge/deploy-render%20blueprint-46e3b7?style=for-the-badge&logo=render&logoColor=black">
@@ -111,7 +111,7 @@ ClinicScribe takes the **Voice Agent API** path of the hackathon challenge:
 
 | Step | Where | Detail |
 | --- | --- | --- |
-| Token minting | `server.js` | `client.voiceAgent.createTemporaryToken({ expiresInSeconds: 60, maxSessionDurationSeconds: 1800 })` via the official `assemblyai@4.41.1` Node SDK |
+| Token minting | `server.js` | `GET https://agents.assemblyai.com/v1/token` with `expires_in_seconds=60` and `max_session_duration_seconds=1800`, Bearer-authenticated — the documented pattern for the Voice Agent API |
 | Connect | `public/app.js` | `new WebSocket("wss://agents.assemblyai.com/v1/ws?token=…")` |
 | Bind agent | `public/app.js` | `session.update` with the stored `agent_id` on socket open |
 | Mic uplink | `public/pcm-processor.js` | Float32 → **24 kHz, mono, signed PCM16** → base64 `input.audio` frames |
@@ -316,7 +316,7 @@ overflow clamping. Manual smoke script lives in the
 
 | Criterion | How ClinicScribe answers it |
 | --- | --- |
-| **Application of Technology** | Voice Agent API integrated the idiomatic way: official Node SDK for token minting, browser-direct WebSocket media plane, stored-agent binding, full event protocol (audio, transcripts, interruptions, session lifecycle) — [details](#-how-assemblyai-is-used-application-of-technology). |
+| **Application of Technology** | Voice Agent API integrated the idiomatic way: server-side temporary-token minting via the Voice Agent REST endpoint, browser-direct WebSocket media plane, stored-agent binding, full event protocol (audio, transcripts, interruptions, session lifecycle) — [details](#-how-assemblyai-is-used-application-of-technology). |
 | **Presentation** | Polished single-page call UX, cover image, architecture diagram, full reproducible deploy, submission copy + video/slide outlines in [docs/submission.md](docs/submission.md). |
 | **Business Value** | Attacks the documentation/intake burden in outpatient clinics: fewer front-desk phone hours, structured pre-visit data, better triage; deployable by any clinic with a browser — see roadmap below. |
 | **Originality** | Not a demo-quality sandbox: production-minded controls (single-use 60 s tokens, origin allowlist, rate limits, cost caps, interruption-correct playback) packaged as a forkable reference for *any* Voice Agent API product. |

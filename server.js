@@ -5,7 +5,6 @@ import express from "express";
 import compression from "compression";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import { AssemblyAI } from "assemblyai";
 
 const {
   ASSEMBLYAI_API_KEY,
@@ -18,9 +17,9 @@ if (!ASSEMBLYAI_API_KEY) {
 }
 
 const app = express();
-const client = new AssemblyAI({ apiKey: ASSEMBLYAI_API_KEY });
 const allowedOrigin = PUBLIC_ORIGIN.replace(/\/$/, "");
 const maxSessionDurationSeconds = 1800;
+const voiceAgentTokenUrl = "https://agents.assemblyai.com/v1/token";
 
 app.disable("x-powered-by");
 // Render terminates TLS and forwards requests from one reverse proxy.
@@ -96,10 +95,25 @@ app.post("/api/voice-token", requireSameOrigin, tokenLimiter, async (_req, res) 
   const requestId = crypto.randomUUID();
 
   try {
-    const result = await client.voiceAgent.createTemporaryToken({
-      expiresInSeconds: 60,
-      maxSessionDurationSeconds,
+    const url = new URL(voiceAgentTokenUrl);
+    url.searchParams.set("expires_in_seconds", "60");
+    url.searchParams.set(
+      "max_session_duration_seconds",
+      String(maxSessionDurationSeconds),
+    );
+
+    const tokenResponse = await fetch(url, {
+      headers: { Authorization: `Bearer ${ASSEMBLYAI_API_KEY}` },
     });
+
+    if (!tokenResponse.ok) {
+      throw Object.assign(
+        new Error(`Voice Agent token endpoint returned ${tokenResponse.status}`),
+        { name: "VoiceAgentTokenError", status: tokenResponse.status },
+      );
+    }
+
+    const { token } = await tokenResponse.json();
 
     res.set({
       "Cache-Control": "no-store, private",
@@ -108,7 +122,7 @@ app.post("/api/voice-token", requireSameOrigin, tokenLimiter, async (_req, res) 
     });
 
     res.json({
-      token: typeof result === "string" ? result : result.token,
+      token,
       maxSessionDurationSeconds,
     });
   } catch (error) {
